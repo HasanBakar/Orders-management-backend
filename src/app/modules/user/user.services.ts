@@ -33,7 +33,7 @@ const getAllUserFromDB = async () => {
   return result;
 };
 
-const getSingleUserFromDB = async (userId: number) => {
+const getSingleUserFromDB = async (userId: number): Promise<TUser | null> => {
   const result = await UserModel.findOne(
     { userId },
     {
@@ -51,8 +51,32 @@ const getSingleUserFromDB = async (userId: number) => {
   return result;
 };
 
+const options = {
+  new: true,
+  projection: { orders: 0, password: 0 },
+};
+
+const updateUserIntoDB = async (
+  userId: number,
+  updatedUser: TUser,
+): Promise<TUser | null> => {
+  const result = await UserModel.findOneAndUpdate(
+    { userId }, //find user by userId
+    { $set: updatedUser }, // update user by updatedUser
+    options,
+  );
+  return result;
+};
+
+const deleteUserIntoDB = async (userId: number) => {
+  const result = await UserModel.deleteOne({ userId });
+  return result;
+};
+
 export const userServices = {
   createUserIntoDB,
   getAllUserFromDB,
   getSingleUserFromDB,
+  updateUserIntoDB,
+  deleteUserIntoDB,
 };

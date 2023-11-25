@@ -18,7 +18,7 @@ const createUser = async (req: Request, res: Response) => {
     const result = await userServices.createUserIntoDB(value);
 
     if (error) {
-      res.status(500).json({
+      return res.status(500).json({
         success: false,
         message:
           'User is not successfuly created, because user is not valid to Joi validator😴',
@@ -26,13 +26,13 @@ const createUser = async (req: Request, res: Response) => {
       });
     }
 
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       message: 'User successfuly created🏃🏾‍♂️',
       data: result,
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: 'User is not successfuly created😴',
       error: error,
@@ -43,13 +43,13 @@ const createUser = async (req: Request, res: Response) => {
 const getAllUser = async (req: Request, res: Response) => {
   try {
     const result = await userServices.getAllUserFromDB();
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       message: 'Users fetched successfully!🏃🏾‍♂️',
       data: result,
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: 'Users not found😴',
       error: error,
@@ -64,7 +64,7 @@ const getSingleUser = async (req: Request, res: Response) => {
     const result = await userServices.getSingleUserFromDB(UserId);
 
     if (result === null) {
-      res.status(404).json({
+      return res.status(404).json({
         success: false,
         message: 'User not found',
         error: {
@@ -73,16 +73,48 @@ const getSingleUser = async (req: Request, res: Response) => {
         },
       });
     } else {
-      res.status(200).json({
+      return res.status(200).json({
         success: true,
         message: 'User fetched successfully!🏃🏾‍♂️',
         data: result,
       });
     }
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: 'User not found😴',
+      error: error,
+    });
+  }
+};
+
+const updateUser = async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params;
+    const UserId = Number(userId);
+    const updatedUser = await req.body;
+    const result = await userServices.updateUserIntoDB(UserId, updatedUser);
+
+    if (result !== null) {
+      return res.status(200).json({
+        success: true,
+        message: 'User updated successfully!',
+        data: result,
+      });
+    } else {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found',
+        error: {
+          code: 404,
+          description: 'User not found!',
+        },
+      });
+    }
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: error.details || 'Used not updated!',
       error: error,
     });
   }
@@ -93,4 +125,5 @@ export const userControllers = {
   createUser,
   getAllUser,
   getSingleUser,
+  updateUser,
 };
