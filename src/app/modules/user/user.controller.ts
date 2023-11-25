@@ -18,7 +18,7 @@ const createUser = async (req: Request, res: Response) => {
     const result = await userServices.createUserIntoDB(value);
 
     if (error) {
-      return res.status(500).json({
+      res.status(500).json({
         success: false,
         message:
           'User is not successfuly created, because user is not valid to Joi validator😴',
@@ -26,13 +26,13 @@ const createUser = async (req: Request, res: Response) => {
       });
     }
 
-    return res.status(200).json({
+    res.status(200).json({
       success: true,
       message: 'User successfuly created🏃🏾‍♂️',
       data: result,
     });
   } catch (error) {
-    return res.status(500).json({
+    res.status(500).json({
       success: false,
       message: 'User is not successfuly created😴',
       error: error,
@@ -43,13 +43,13 @@ const createUser = async (req: Request, res: Response) => {
 const getAllUser = async (req: Request, res: Response) => {
   try {
     const result = await userServices.getAllUserFromDB();
-    return res.status(200).json({
+    res.status(200).json({
       success: true,
       message: 'Users fetched successfully!🏃🏾‍♂️',
       data: result,
     });
   } catch (error) {
-    return res.status(500).json({
+    res.status(500).json({
       success: false,
       message: 'Users not found😴',
       error: error,
@@ -64,7 +64,7 @@ const getSingleUser = async (req: Request, res: Response) => {
     const result = await userServices.getSingleUserFromDB(UserId);
 
     if (result === null) {
-      return res.status(404).json({
+      res.status(404).json({
         success: false,
         message: 'User not found',
         error: {
@@ -73,14 +73,14 @@ const getSingleUser = async (req: Request, res: Response) => {
         },
       });
     } else {
-      return res.status(200).json({
+      res.status(200).json({
         success: true,
         message: 'User fetched successfully!🏃🏾‍♂️',
         data: result,
       });
     }
   } catch (error) {
-    return res.status(500).json({
+    res.status(500).json({
       success: false,
       message: 'User not found😴',
       error: error,
@@ -96,13 +96,13 @@ const updateUser = async (req: Request, res: Response) => {
     const result = await userServices.updateUserIntoDB(UserId, updatedUser);
 
     if (result !== null) {
-      return res.status(200).json({
+      res.status(200).json({
         success: true,
         message: 'User updated successfully!',
         data: result,
       });
     } else {
-      return res.status(404).json({
+      res.status(404).json({
         success: false,
         message: 'User not found',
         error: {
@@ -161,10 +161,13 @@ const createOrder = async (req: Request, res: Response) => {
     const order = req.body;
     const { error, value } = JoiordersSchema.validate(order);
     if (error) {
-      return res.status(500).json({
+      res.status(500).json({
         success: false,
-        message: 'Order is not valid',
-        error: error.details,
+        message: 'order is not valid',
+        error: {
+          code: 404,
+          description: 'order is not valid',
+        },
       });
     }
     const result = await userServices.createOrderIntoDB(UserId, value);
@@ -175,7 +178,7 @@ const createOrder = async (req: Request, res: Response) => {
         data: null,
       });
     } else {
-      res.status(500).json({
+      res.status(404).json({
         success: false,
         message: 'User not found',
         error: {
@@ -192,6 +195,41 @@ const createOrder = async (req: Request, res: Response) => {
     });
   }
 };
+
+const getAllOrdersOfASpecificUser = async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params;
+    const UserId = Number(userId);
+    const result = await userServices.getAllOrdersOfASpecificUserFromDB(UserId);
+
+    if (result) {
+      res.status(200).json({
+        success: true,
+        message: 'Order fetched successfully!',
+        data: result,
+      });
+    } else {
+      res.status(404).json({
+        success: false,
+        message: 'User not found',
+        error: {
+          code: 404,
+          description: 'User not found',
+        },
+      });
+    }
+  } catch (error) {
+    res.status(404).json({
+      success: false,
+      message: 'User not found',
+      error: {
+        code: 404,
+        description: 'User not found',
+      },
+    });
+  }
+};
+
 export const userControllers = {
   initialRoute,
   createUser,
@@ -200,4 +238,5 @@ export const userControllers = {
   updateUser,
   deleteSingleUser,
   createOrder,
+  getAllOrdersOfASpecificUser,
 };
