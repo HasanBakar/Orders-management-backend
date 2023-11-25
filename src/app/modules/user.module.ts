@@ -1,24 +1,24 @@
 import { Schema, model } from 'mongoose';
-import { User, Fullname, Address, Orders } from './user/user.interface';
+import { TUser, TFullname, TAddress, TOrders } from './user/user.interface';
 
-const fullNameSchema = new Schema<Fullname>({
+const fullNameSchema = new Schema<TFullname>({
   firstName: String,
   lastName: String,
 });
 
-const addressSchema = new Schema<Address>({
+const addressSchema = new Schema<TAddress>({
   street: String,
   city: String,
   country: String,
 });
 
-const ordersSchema = new Schema<Orders>({
+const ordersSchema = new Schema<TOrders>({
   productName: String,
   price: Number,
   quantity: Number,
 });
 
-const userSchema = new Schema<User>({
+const userSchema = new Schema<TUser>({
   userId: {
     type: Number,
     unique: true,
@@ -40,4 +40,4 @@ const userSchema = new Schema<User>({
   orders: [ordersSchema],
 });
 
-export const UserModel = model<User>('User', userSchema);
+export const UserModel = model<TUser>('User', userSchema);
