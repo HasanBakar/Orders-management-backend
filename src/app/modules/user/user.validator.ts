@@ -26,7 +26,7 @@ const addressSchema = Joi.object({
   }),
 });
 
-const ordersSchema = Joi.object({
+export const JoiordersSchema = Joi.object({
   productName: Joi.string().messages({
     'string.base': 'Product name must be a string.',
   }),
@@ -40,7 +40,7 @@ const ordersSchema = Joi.object({
   }),
 });
 
-const joiUserSchema = Joi.object({
+export const joiUserSchema = Joi.object({
   userId: Joi.number().required().messages({
     'any.required': 'User ID is required.',
     'number.base': 'User ID must be a number.',
@@ -71,7 +71,5 @@ const joiUserSchema = Joi.object({
     'array.base': 'Hobbies must be an array.',
   }),
   address: addressSchema,
-  orders: Joi.array().items(ordersSchema),
+  orders: Joi.array().items(JoiordersSchema),
 });
-
-export default joiUserSchema;

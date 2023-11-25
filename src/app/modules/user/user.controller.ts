@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { userServices } from './user.services';
 import bcrypt from 'bcrypt';
-import joiUserSchema from './user.validator';
+import { JoiordersSchema, joiUserSchema } from './user.validator';
 
 const initialRoute = (req: Request, res: Response) => {
   res.send('🎁🎁🎁 Orders management backend server is ready 🎁🎁🎁');
@@ -153,6 +153,45 @@ const deleteSingleUser = async (req: Request, res: Response) => {
     });
   }
 };
+
+const createOrder = async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params;
+    const UserId = Number(userId);
+    const order = req.body;
+    const { error, value } = JoiordersSchema.validate(order);
+    if (error) {
+      return res.status(500).json({
+        success: false,
+        message: 'Order is not valid',
+        error: error.details,
+      });
+    }
+    const result = await userServices.createOrderIntoDB(UserId, value);
+    if (result.modifiedCount > 0) {
+      res.status(200).json({
+        success: true,
+        message: 'Order created successfully!',
+        data: null,
+      });
+    } else {
+      res.status(500).json({
+        success: false,
+        message: 'User not found',
+        error: {
+          code: 404,
+          description: 'User not found',
+        },
+      });
+    }
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: error.message || 'User not found',
+      error: error,
+    });
+  }
+};
 export const userControllers = {
   initialRoute,
   createUser,
@@ -160,4 +199,5 @@ export const userControllers = {
   getSingleUser,
   updateUser,
   deleteSingleUser,
+  createOrder,
 };
