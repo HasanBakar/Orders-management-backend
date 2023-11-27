@@ -86,6 +86,24 @@ const getAllOrdersOfASpecificUserFromDB = async (UserId: number) => {
   return result;
 };
 
+const getTotalPriceOfOrdersFromDB = async (UserId: number) => {
+  const result = await UserModel.aggregate([
+    // stage 1
+    { $match: { userId: UserId } },
+    // stage 2
+    { $unwind: '$orders' },
+    // stage 3
+    {
+      $group: {
+        _id: '$_id',
+        totalPrice: {
+          $sum: { $multiply: ['$orders.price', '$orders.quantity'] },
+        },
+      },
+    },
+  ]);
+  return result;
+};
 export const userServices = {
   createUserIntoDB,
   getAllUserFromDB,
@@ -94,4 +112,5 @@ export const userServices = {
   deleteUserIntoDB,
   createOrderIntoDB,
   getAllOrdersOfASpecificUserFromDB,
+  getTotalPriceOfOrdersFromDB,
 };

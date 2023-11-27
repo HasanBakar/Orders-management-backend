@@ -10,7 +10,7 @@ const initialRoute = (req: Request, res: Response) => {
 const createUser = async (req: Request, res: Response) => {
   try {
     const { user } = await req.body;
-    const salt = await bcrypt.genSalt(10);
+    const salt = await bcrypt.genSalt(12);
     const hashedPassword = await bcrypt.hash(user.password, salt);
     user.password = hashedPassword;
 
@@ -93,7 +93,18 @@ const updateUser = async (req: Request, res: Response) => {
     const { userId } = req.params;
     const UserId = Number(userId);
     const updatedUser = await req.body;
-    const result = await userServices.updateUserIntoDB(UserId, updatedUser);
+    const { error, value } = joiUserSchema.validate(updatedUser);
+
+    if (error) {
+      res.status(500).json({
+        success: false,
+        message:
+          'User is not successfuly updated, because user is not valid to Joi validator😴',
+        error: error.details,
+      });
+    }
+
+    const result = await userServices.updateUserIntoDB(UserId, value);
 
     if (result !== null) {
       res.status(200).json({
@@ -230,6 +241,42 @@ const getAllOrdersOfASpecificUser = async (req: Request, res: Response) => {
   }
 };
 
+const getTotalPriceOfOrders = async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params;
+    const UserId = Number(userId);
+    const result = await userServices.getTotalPriceOfOrdersFromDB(UserId);
+
+    if (result.length > 0) {
+      res.status(200).json({
+        success: true,
+        message: 'Total price calculated successfully',
+        data: {
+          totalPrice: result[0].totalPrice, //sent totalPrice by index because result is a array
+        },
+      });
+    } else {
+      res.status(404).json({
+        success: false,
+        message: 'User not found',
+        error: {
+          code: 404,
+          description: 'User not found',
+        },
+      });
+    }
+  } catch (error: any) {
+    res.status(404).json({
+      success: false,
+      message: 'User not found',
+      error: {
+        code: 404,
+        description: 'User not found',
+      },
+    });
+  }
+};
+
 export const userControllers = {
   initialRoute,
   createUser,
@@ -239,4 +286,5 @@ export const userControllers = {
   deleteSingleUser,
   createOrder,
   getAllOrdersOfASpecificUser,
+  getTotalPriceOfOrders,
 };
