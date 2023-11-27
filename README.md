@@ -56,7 +56,7 @@ npm install
 
 ```code
 DATABASE_URL=your_mongodb_url
-PORT=5000
+PORT=3000
 
 ```
 
@@ -95,5 +95,57 @@ npm run start:prod
 - v. step 5: Go to browser search bar and paste the url
 
 ```code
-http://localhost:5000/api
+http://localhost:3000/api
+```
+
+# Usage
+
+## API Endpoints
+
+- POST /api/users: Create a new user.
+
+```code
+http://localhost:5000/api/users
+```
+
+- GET /api/users: Get all users.
+
+```code
+http://localhost:3000/api/users
+```
+
+- GET /api/users: Get a users with userId.
+
+```code
+http://localhost:3000/api/users/:userId
+```
+
+- PUT /api/users/:userId: Update user details.
+
+```code
+http://localhost:3000/api/users/:userId
+```
+
+- DELETE /api/users/:userId: Delete user with help of userId.
+
+```code
+http://localhost:3000/api/users/:userId
+```
+
+- PUT /api/users/:userId/orders: Add a product object to the orders array for the user.
+
+```code
+http://localhost:3000/api/users/:userId/orders
+```
+
+- GET /api/users/:userId/orders: Get all orders of a user.
+
+```code
+http://localhost:3000/api/users/:userId/orders
+```
+
+- GET /api/users/:userId/orders/total-price: Get the total price of a user's orders.
+
+```code
+http://localhost:3000/api/users/:userId/orders/total-price
 ```
