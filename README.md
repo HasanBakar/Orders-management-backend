@@ -40,12 +40,14 @@
 
 ### 1. Clone the project repository
 
-```git clone https://github.com/HasanBakar/Orders-management-backend.git
+```git
+   git clone https://github.com/HasanBakar/Orders-management-backend.git
    cd Orders-management-backend
 ```
 
 2. Install dependencies using npm
 
-```npm install
+```npm
+npm install
 
 ```
