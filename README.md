@@ -149,3 +149,11 @@ http://localhost:3000/api/users/:userId/orders
 ```code
 http://localhost:3000/api/users/:userId/orders/total-price
 ```
+
+# Validation
+
+User input is validated using Joi. Check the Orders-management-backend/src/app/modules/user/user.validator.ts file for validation details.
+
+# Security
+
+Passwords are hashed using bcrypt for enhanced security.
