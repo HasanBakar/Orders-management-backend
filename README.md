@@ -59,3 +59,14 @@ DATABASE_URL=your_mongodb_url
 PORT=5000
 
 ```
+
+### 4. Start the development server:
+
+    i. step 1: this command use for eslint
+    ```code
+    npm run lint
+    ```
+    ii. step 2: this command use for prettier
+    ```code
+    npm run prettier
+    ```
