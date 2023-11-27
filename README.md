@@ -73,3 +73,27 @@ npm run lint
 ```code
 npm run prettier
 ```
+
+- iii. step 3: this command use for typecript compiling
+
+```code
+npm run build
+```
+
+- iv. step 4: this command use for locally run the project
+
+```code
+npm run start:dev
+```
+
+or
+
+```code
+npm run start:prod
+```
+
+- v. step 5: Go to browser search bar and paste the url
+
+```code
+http://localhost:5000/api
+```
