@@ -45,9 +45,17 @@
    cd Orders-management-backend
 ```
 
-2. Install dependencies using npm
+### 2. Install dependencies using npm
 
 ```npm
 npm install
+
+```
+
+### 3.Create a .env file in the root directory with the following content:
+
+```code
+DATABASE_URL=your_mongodb_url
+PORT=5000
 
 ```
