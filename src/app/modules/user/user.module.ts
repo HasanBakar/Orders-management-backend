@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-import { TUser, TFullname, TAddress, TOrder } from './user/user.interface';
+import { TUser, TFullname, TAddress, TOrder } from './user.interface';
 
 const fullNameSchema = new Schema<TFullname>({
   firstName: String,

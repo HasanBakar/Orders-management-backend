@@ -1,4 +1,4 @@
-import { UserModel } from '../user.module';
+import { UserModel } from './user.module';
 import { TOrder, TUser } from './user.interface';
 
 const createUserIntoDB = async (user: TUser) => {
