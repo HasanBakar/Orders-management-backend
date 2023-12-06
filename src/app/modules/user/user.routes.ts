@@ -15,10 +15,7 @@ router.put('/users/:userId', userControllers.updateUser);
 
 router.delete('/users/:userId', userControllers.deleteSingleUser);
 
-router.put(
-  '/users/:userId/orders/total-price',
-  userControllers.getTotalPriceOfOrders,
-);
+router.put('/users/:userId/orders', userControllers.createOrder);
 
 router.get(
   '/users/:userId/orders',
