@@ -9,7 +9,7 @@ const initialRoute = (req: Request, res: Response) => {
 
 const createUser = async (req: Request, res: Response) => {
   try {
-    const { user } = await req.body;
+    const user = await req.body;
     const salt = await bcrypt.genSalt(12);
     const hashedPassword = await bcrypt.hash(user.password, salt);
     user.password = hashedPassword;
